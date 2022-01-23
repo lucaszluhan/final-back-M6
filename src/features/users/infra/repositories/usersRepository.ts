@@ -14,4 +14,7 @@ export default class UsersRepository {
    async create(user: IUsers) {
       await this.repository.insert(user);
    }
+   async findUser(name: string) {
+      return await this.repository.find({ name: name });
+   }
 }

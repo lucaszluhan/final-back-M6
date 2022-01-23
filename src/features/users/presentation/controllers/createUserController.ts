@@ -1,12 +1,10 @@
-import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import Controller from '../../../../core/presentation/contracts/controller';
 import { badRequest, ok, serverError } from '../../../../core/presentation/helpers/httpHandlers';
 import CreateUserUsecase from '../../domain/usecase/createUserUsecase';
-import UsersRepository from '../../infra/repositories/usersRepository';
 
 export default class CreateUserController implements Controller {
-   constructor(private repository: UsersRepository) {}
+   constructor(private usecase: CreateUserUsecase) {}
 
    async execute(req: Request, res: Response) {
       try {
@@ -19,8 +17,7 @@ export default class CreateUserController implements Controller {
             return badRequest(res, 'Sem valor de password.');
          }
 
-         let createUsecase = new CreateUserUsecase(this.repository);
-         createUsecase.run({ name: name, password: password });
+         await this.usecase.run({ name: name, password: password });
 
          return ok(res, 'Usuario criado com sucesso.');
       } catch (error) {

@@ -5,12 +5,11 @@ import ListUsersUsecase from '../../domain/usecase/listUsersUsecase';
 import UsersRepository from '../../infra/repositories/usersRepository';
 
 export default class ListUsersController implements Controller {
-   constructor(private repository: UsersRepository) {}
+   constructor(private usecase: ListUsersUsecase) {}
 
    async execute(req: Request, res: Response) {
       try {
-         let listUsecase = new ListUsersUsecase(this.repository);
-         const result = await listUsecase.run();
+         let result = await this.usecase.run();
 
          return ok(res, 'Usuarios listados.', result);
       } catch (error) {

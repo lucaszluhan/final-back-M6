@@ -2,10 +2,9 @@ import { Request, Response } from 'express';
 import Controller from '../../../../core/presentation/contracts/controller';
 import { badRequest, ok, serverError } from '../../../../core/presentation/helpers/httpHandlers';
 import CreateNoteUsecase from '../../domain/usecase/createNoteUsecase';
-import NotesRepository from '../../infra/repositories/notesRepository';
 
 export default class CreateNoteController implements Controller {
-   constructor(private repository: NotesRepository) {}
+   constructor(private usecase: CreateNoteUsecase) {}
 
    async execute(req: Request, res: Response) {
       try {
@@ -22,9 +21,7 @@ export default class CreateNoteController implements Controller {
             return badRequest(res, 'Sem valor de description.');
          }
 
-         const usecase = new CreateNoteUsecase(this.repository);
-
-         usecase.run({ detail, description, id });
+         this.usecase.run({ detail, description, id });
 
          return ok(res, 'Nota criada com sucesso.');
       } catch (error) {

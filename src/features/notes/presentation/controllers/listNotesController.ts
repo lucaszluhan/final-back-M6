@@ -5,7 +5,7 @@ import ListNotesUsecase from '../../domain/usecase/listNotesUsecase';
 import NotesRepository from '../../infra/repositories/notesRepository';
 
 export default class ListNotesController implements Controller {
-   constructor(private repository: NotesRepository) {}
+   constructor(private usecase: ListNotesUsecase) {}
 
    async execute(req: Request, res: Response) {
       try {
@@ -14,9 +14,7 @@ export default class ListNotesController implements Controller {
             return badRequest(res, 'Sem valor de ID.');
          }
 
-         const listUsecase = new ListNotesUsecase(this.repository);
-
-         let result = await listUsecase.run({ id: id });
+         let result = await this.usecase.run({ id: id });
 
          return ok(res, 'Notas listadas.', result);
       } catch (error) {

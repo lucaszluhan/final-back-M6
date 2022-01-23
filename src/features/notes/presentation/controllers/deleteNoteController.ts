@@ -5,7 +5,7 @@ import DeleteNoteUsecase from '../../domain/usecase/deleteNoteUsecase';
 import NotesRepository from '../../infra/repositories/notesRepository';
 
 export default class DeleteNoteController implements Controller {
-   constructor(private repository: NotesRepository) {}
+   constructor(private usecase: DeleteNoteUsecase) {}
 
    async execute(req: Request, res: Response) {
       try {
@@ -14,9 +14,7 @@ export default class DeleteNoteController implements Controller {
             return badRequest(res, 'Sem valor de ID.');
          }
 
-         let deleteUsecase = new DeleteNoteUsecase(this.repository);
-
-         deleteUsecase.run({ id: id });
+         this.usecase.run({ id: id });
 
          return ok(res, 'Nota deletada com sucesso.');
       } catch (error) {

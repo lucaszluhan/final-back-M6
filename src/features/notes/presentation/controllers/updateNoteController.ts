@@ -5,7 +5,7 @@ import UpdateNoteUsecase from '../../domain/usecase/updateNoteUsecase';
 import NotesRepository from '../../infra/repositories/notesRepository';
 
 export default class UpdateNoteController implements Controller {
-   constructor(private repository: NotesRepository) {}
+   constructor(private usecase: UpdateNoteUsecase) {}
 
    async execute(req: Request, res: Response) {
       try {
@@ -21,9 +21,7 @@ export default class UpdateNoteController implements Controller {
             return badRequest(res, 'Sem valor de description.');
          }
 
-         const updateUsecase = new UpdateNoteUsecase(this.repository);
-
-         updateUsecase.run({ detail: detail, description: description, id: id });
+         this.usecase.run({ detail: detail, description: description, id: id });
 
          return ok(res, 'Nota alterada com sucesso.');
       } catch (error) {
