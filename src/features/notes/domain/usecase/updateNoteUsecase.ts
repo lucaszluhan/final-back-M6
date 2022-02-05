@@ -1,20 +1,23 @@
 import Usecase from '../../../../core/domain/contracts/usecase';
-import NotFoundError from '../../../../core/domain/errors/notFoundError';
 import NotesRepository from '../../infra/repositories/notesRepository';
+import IdError from '../errors/idError';
+import LengthError from '../errors/lengthError';
 import UpdateNoteParams from '../model/updateNoteParams';
 
 export default class UpdateNoteUsecase implements Usecase {
    constructor(private repository: NotesRepository) {}
 
    async run(data: UpdateNoteParams) {
-      if (!data.id) {
-         throw new NotFoundError('ID');
+      if (data.detail.length > 500) {
+         throw new LengthError();
       }
-      if (!data.detail) {
-         throw new NotFoundError('Detail');
+
+      if (data.description.length > 50) {
+         throw new LengthError();
       }
-      if (!data.description) {
-         throw new NotFoundError('Description');
+
+      if (data.id.length != 36) {
+         throw new IdError();
       }
 
       this.repository.update(data.id, data.detail, data.description);
