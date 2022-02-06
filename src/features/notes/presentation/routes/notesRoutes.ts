@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import { CacheRepository } from '../../../../core/infra/repositories/cacheRepository';
 import CreateNoteUsecase from '../../domain/usecase/createNoteUsecase';
 import DeleteNoteUsecase from '../../domain/usecase/deleteNoteUsecase';
 import ListNotesUsecase from '../../domain/usecase/listNotesUsecase';
@@ -14,11 +15,12 @@ export default class NotesRoutes {
       let router = Router();
 
       let notesRepo = new NotesRepository();
+      let cacheRepo = new CacheRepository();
 
-      let listUsecase = new ListNotesUsecase(notesRepo);
-      let createUsecase = new CreateNoteUsecase(notesRepo);
-      let updateUsecase = new UpdateNoteUsecase(notesRepo);
-      let deleteUsecase = new DeleteNoteUsecase(notesRepo);
+      let listUsecase = new ListNotesUsecase(notesRepo, cacheRepo);
+      let createUsecase = new CreateNoteUsecase(notesRepo, cacheRepo);
+      let updateUsecase = new UpdateNoteUsecase(notesRepo, cacheRepo);
+      let deleteUsecase = new DeleteNoteUsecase(notesRepo, cacheRepo);
 
       let listNotesController = new ListNotesController(listUsecase);
       let createNoteController = new CreateNoteController(createUsecase);
@@ -31,10 +33,10 @@ export default class NotesRoutes {
       router.post('/:id', (req: Request, res: Response) => {
          createNoteController.execute(req, res);
       });
-      router.put('/:id', (req: Request, res: Response) => {
+      router.put('/:id/:userId', (req: Request, res: Response) => {
          updateNoteController.execute(req, res);
       });
-      router.delete('/:id', (req: Request, res: Response) => {
+      router.delete('/:id/:userId', (req: Request, res: Response) => {
          deleteNoteController.execute(req, res);
       });
 

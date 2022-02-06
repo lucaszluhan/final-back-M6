@@ -9,12 +9,12 @@ export default class DeleteNoteController implements Controller {
 
    async execute(req: Request, res: Response) {
       try {
-         const id = req.params.id;
+         const { id, userId } = req.params;
          if (!id) {
             return badRequest(res, 'Sem valor de ID.');
          }
 
-         this.usecase.run({ id: id });
+         this.usecase.run({ id: id, userId: userId });
 
          return ok(res, 'Nota deletada com sucesso.');
       } catch (error) {

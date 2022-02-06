@@ -9,7 +9,7 @@ export default class UpdateNoteController implements Controller {
 
    async execute(req: Request, res: Response) {
       try {
-         const id = req.params.id;
+         const { id, userId } = req.params;
          const { detail, description } = req.body;
          if (!id) {
             return badRequest(res, 'Sem valor de ID.');
@@ -21,7 +21,7 @@ export default class UpdateNoteController implements Controller {
             return badRequest(res, 'Sem valor de description.');
          }
 
-         this.usecase.run({ detail: detail, description: description, id: id });
+         this.usecase.run({ detail: detail, description: description, id: id, user_id: userId });
 
          return ok(res, 'Nota alterada com sucesso.');
       } catch (error) {

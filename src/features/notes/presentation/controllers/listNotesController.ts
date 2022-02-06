@@ -14,7 +14,7 @@ export default class ListNotesController implements Controller {
             return badRequest(res, 'Sem valor de ID.');
          }
 
-         let result = await this.usecase.run({ id: id });
+         let result = await this.usecase.run({ userId: id });
 
          return ok(res, 'Notas listadas.', result);
       } catch (error) {

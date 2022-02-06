@@ -1,3 +1,3 @@
 export default interface ListNotesParams {
-   id: string;
+   userId: string;
 }
