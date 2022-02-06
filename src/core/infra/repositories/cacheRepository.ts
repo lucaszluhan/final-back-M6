@@ -15,17 +15,6 @@ export class CacheRepository {
       }
    }
 
-   async hset(globalKey: string, key: string, value: any) {
-      const result = await this.redis.hset(globalKey, key, JSON.stringify(value), key, JSON.stringify(value), key, JSON.stringify(value));
-      if (result == null) {
-         throw new Error('Set Error');
-      }
-   }
-
-   async sadd(key: string, set: string) {
-      await this.redis.sadd(key, set);
-   }
-
    async get(key: string) {
       const result = await this.redis.get(key);
       return result != null ? JSON.parse(result) : undefined;
