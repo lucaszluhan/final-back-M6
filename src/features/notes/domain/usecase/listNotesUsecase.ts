@@ -9,7 +9,7 @@ export default class ListNotesUsecase implements Usecase {
    constructor(private repository: NotesRepository, private cacheRepo: CacheRepository) {}
 
    async run(data: ListNotesParams) {
-      if (data.userId.length > 32) {
+      if (data.userId.length > 36) {
          throw new IdError();
       }
 

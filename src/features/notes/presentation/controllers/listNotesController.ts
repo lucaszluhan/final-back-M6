@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import Controller from '../../../../core/presentation/contracts/controller';
 import { badRequest, ok, serverError } from '../../../../core/presentation/helpers/httpHandlers';
 import ListNotesUsecase from '../../domain/usecase/listNotesUsecase';
-import NotesRepository from '../../infra/repositories/notesRepository';
 
 export default class ListNotesController implements Controller {
    constructor(private usecase: ListNotesUsecase) {}
@@ -10,6 +9,8 @@ export default class ListNotesController implements Controller {
    async execute(req: Request, res: Response) {
       try {
          const id = req.params.id;
+         console.log(id);
+
          if (!id) {
             return badRequest(res, 'Sem valor de ID.');
          }

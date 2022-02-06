@@ -8,7 +8,7 @@ export default class DeleteNoteUsecase implements Usecase {
    constructor(private repository: NotesRepository, private cacheRepo: CacheRepository) {}
 
    async run(data: DeleteNoteParams) {
-      if (data.id.length > 32) {
+      if (data.id.length > 36) {
          throw new IdError();
       }
 
