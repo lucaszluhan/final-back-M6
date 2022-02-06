@@ -9,7 +9,6 @@ export default class ListNotesController implements Controller {
    async execute(req: Request, res: Response) {
       try {
          const id = req.params.id;
-         console.log(id);
 
          if (!id) {
             return badRequest(res, 'Sem valor de ID.');
