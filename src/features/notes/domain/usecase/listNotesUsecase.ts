@@ -4,6 +4,7 @@ import { CacheRepository } from '../../../../core/infra/repositories/cacheReposi
 import NotesRepository from '../../infra/repositories/notesRepository';
 import IdError from '../errors/idError';
 import ListNotesParams from '../model/listNotesParams';
+import INotes from '../model/notesInterface';
 
 export default class ListNotesUsecase implements Usecase {
    constructor(private repository: NotesRepository, private cacheRepo: CacheRepository) {}
@@ -13,7 +14,8 @@ export default class ListNotesUsecase implements Usecase {
          throw new IdError();
       }
 
-      let cachedNotes = await this.cacheRepo.get(`note:AllForId${data.userId}`);
+      let cachedNotes: INotes[] = await this.cacheRepo.get(`note:All${data.userId}`);
+
       if (cachedNotes) {
          return cachedNotes;
       }
@@ -24,7 +26,7 @@ export default class ListNotesUsecase implements Usecase {
          throw new NotFoundError('Notes');
       }
 
-      await this.cacheRepo.set(`note:AllForID${data.userId}`, notes);
+      await this.cacheRepo.set(`note:All${data.userId}`, JSON.stringify(notes));
 
       return notes;
    }
