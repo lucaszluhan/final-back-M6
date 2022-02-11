@@ -14,10 +14,10 @@ export default class ListNotesUsecase implements Usecase {
          throw new IdError();
       }
 
-      let cachedNotes: INotes[] = await this.cacheRepo.get(`note:All${data.userId}`);
+      let cachedNotes = await this.cacheRepo.get(`note:All${data.userId}`);
 
       if (cachedNotes) {
-         return cachedNotes;
+         return JSON.parse(cachedNotes);
       }
 
       let notes = await this.repository.list(data.userId);
